@@ -25,7 +25,6 @@ class ValidateAddressesResponse
     public function validatedAddresses(): array
     {
         $validationResults = $this->responseBody['ValidateAddressesResponse']['ValidatedAddressResultList']['ValidatedAddressResult'] ?? [];
-
         return array_map(function (array $validationResult) {
             $errors = [];
             $warnings = [];
@@ -39,7 +38,6 @@ class ValidateAddressesResponse
                     $errors[] = new Error($error['ErrorCode'], lcfirst($error['ComponentRef']));
                 }
             }
-
             return new ValidatedAddress(
                 Address::fromResponse($validationResult['ValidatedAddressList']['ValidatedAddress'][0] ?? []),
                 $this->originalAddresses[$validationResult['@id']],

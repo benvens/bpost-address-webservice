@@ -48,7 +48,7 @@ class ValidateAddressesRequest
             ];
         }, $this->addresses, array_keys(array_values($this->addresses)));
 
-        return [
+        $body = [
             'ValidateAddressesRequest' => [
                 'AddressToValidateList' => [
                     'AddressToValidate' => $addresses,
@@ -56,5 +56,6 @@ class ValidateAddressesRequest
                 'ValidateAddressOptions' => $this->options,
             ],
         ];
+        return $body;
     }
 }
