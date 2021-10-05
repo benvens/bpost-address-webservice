@@ -73,10 +73,19 @@ class AddressValidatorTest extends TestCase
                 'municipalityName' => 'Antwaarpe',
                 'country' => 'BELGIE',
             ]),
+            Address::create([
+                'streetName' => 'Lalala',
+                'streetNumber' => '69',
+                'boxNumber' => '',
+                'postalCode' => '2060',
+                'municipalityName' => 'Antwerpen',
+                'country' => 'BELGIE',
+            ]),
         ]);
 
         $this->assertInstanceOf(ValidatedAddress::class, $validatedAddresses[0]);
         $this->assertInstanceOf(ValidatedAddress::class, $validatedAddresses[1]);
+        $this->assertInstanceOf(ValidatedAddress::class, $validatedAddresses[2]);
 
         $this->assertFalse($validatedAddresses[0]->hasIssues());
         $this->assertFalse($validatedAddresses[0]->hasErrors());
@@ -117,5 +126,25 @@ class AddressValidatorTest extends TestCase
                 'municipalityName' => 'Antwaarpe',
                 'country' => 'BELGIE',
         ], $validatedAddresses[1]->originalAddress()->toArray());
+
+        $this->assertTrue($validatedAddresses[2]->hasIssues());
+        $this->assertTrue($validatedAddresses[2]->hasErrors());
+        $this->assertFalse($validatedAddresses[2]->hasWarnings());
+        $this->assertEquals([
+            'streetName' => '',
+            'streetNumber' => '',
+            'boxNumber' => '',
+            'postalCode' => '2060',
+            'municipalityName' => 'ANTWERPEN',
+            'country' => 'BE',
+        ], $validatedAddresses[2]->toArray());
+        $this->assertEquals([
+                'streetName' => 'Samberdreef',
+                'streetNumber' => '69',
+                'boxNumber' => '',
+                'postalCode' => '2060',
+                'municipalityName' => 'Antwerpen',
+                'country' => 'BE',
+        ], $validatedAddresses[2]->originalAddress()->toArray());
     }
 }

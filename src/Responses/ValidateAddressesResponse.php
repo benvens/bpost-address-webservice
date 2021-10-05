@@ -19,12 +19,22 @@ class ValidateAddressesResponse
     {
         $this->responseBody = $responseBody;
 
+        if(isset($responseBody['ValidateAddressesResponse']['GeneralError']['ErrorCode'])) {
+            dd($responseBody);
+            throw new \Exception(
+                'BPost failed with ErrorCode: '
+                .$responseBody['ValidateAddressesResponse']['GeneralError']['ErrorCode']
+                .', and ErrorSeverity: ' . $responseBody['ValidateAddressesResponse']['GeneralError']['ErrorSeverity'] .'.'
+            );
+        }
+
         $this->originalAddresses = $originalAddresses;
     }
 
     public function validatedAddresses(): array
     {
         $validationResults = $this->responseBody['ValidateAddressesResponse']['ValidatedAddressResultList']['ValidatedAddressResult'] ?? [];
+        
         return array_map(function (array $validationResult) {
             $errors = [];
             $warnings = [];

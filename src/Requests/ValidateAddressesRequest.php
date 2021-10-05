@@ -45,6 +45,7 @@ class ValidateAddressesRequest
                     ],
                 ],
                 'DeliveringCountryISOCode' => $address->country,
+                'DispatchingCountryISOCode' => $address->country,
             ];
         }, $this->addresses, array_keys(array_values($this->addresses)));
 
