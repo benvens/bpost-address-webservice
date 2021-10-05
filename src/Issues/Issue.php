@@ -2,7 +2,9 @@
 
 namespace Spatie\BpostAddressWebservice\Issues;
 
-abstract class Issue
+use JsonSerializable;
+
+abstract class Issue implements JsonSerializable
 {
     /** @var string */
     protected $message;
@@ -24,5 +26,13 @@ abstract class Issue
     public function attribute(): string
     {
         return $this->attribute;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'attribute' => $this->attribute,
+            'message' => $this->message,
+        ];
     }
 }
