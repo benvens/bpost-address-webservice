@@ -2,6 +2,8 @@
 
 namespace Spatie\BpostAddressWebservice;
 
+use JsonSerializable;
+
 /**
  * @property string streetName
  * @property string streetNumber
@@ -11,7 +13,7 @@ namespace Spatie\BpostAddressWebservice;
  * @property string country
  * @property array issues
  */
-class ValidatedAddress
+class ValidatedAddress implements JsonSerializable
 {
     /** @var \Spatie\BpostAddressWebservice\Address */
     public $validatedAddress;
@@ -75,5 +77,15 @@ class ValidatedAddress
     public function toArray(): array
     {
         return $this->validatedAddress->toArray();
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'validatedAddress' => $this->toArray(),
+            'originalAddress' => $this->originalAddress(),
+            'errors' => $this->errors,
+            'warnings' => $this->warnings,
+        ];
     }
 }

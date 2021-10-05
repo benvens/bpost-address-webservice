@@ -2,7 +2,9 @@
 
 namespace Spatie\BpostAddressWebservice;
 
-class Address
+use JsonSerializable;
+
+class Address implements JsonSerializable
 {
     /** @var string */
     public $streetName;
@@ -58,5 +60,9 @@ class Address
             'municipalityName' => $this->municipalityName,
             'country' => $this->country,
         ];
+    }
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
     }
 }
